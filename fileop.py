@@ -2,6 +2,7 @@ import click
 import glob
 import os
 import  os.path
+import shutil
 
 @click.group()
 def file_op():
@@ -81,10 +82,48 @@ def add_head(src,head,base):
             click.echo(os.path.basename(targetName))
 
 
+@click.command('copy')
+@click.option('-src',help='源路径文件批')
+@click.option('-dst',help='目标文件夹')
+def copy(src,dst):
+    '''
+    exp: copy -src=f:/ttt/*.txt -dst=f:/ttt/test
+    :param src:
+    :param dst:
+    :return:
+    '''
+    for item in glob.glob(src):
+        file_name=os.path.basename(item)
+        src_path=os.path.join(os.path.dirname(src),file_name)
+        dst_path=os.path.join(dst,file_name)
+        shutil.copyfile(src_path,dst_path)
+        print('target: {0}'.format(dst_path))
+
+
+
+@click.command('move')
+@click.option('-src',help='源路径文件批，会移动源路径机器下方所有的文件')
+@click.option('-dst',help='目标文件夹')
+def move(src,dst):
+    '''
+    examp: move -src=f:/ttt/*.txt -dst=f:/ttt/test
+    :param src:
+    :param dst:
+    :return:
+    '''
+    for item in glob.glob(src):
+        file_name=os.path.basename(item)
+        target_name=os.path.join(dst,file_name)
+        shutil.move(item,target_name)
+        print(target_name)
+
+
 
 if __name__ == '__main__':
     file_op.add_command(traversePath)
     file_op.add_command(add_tail)
     file_op.add_command(add_head)
+    file_op.add_command(copy)
+    file_op.add_command(move)
     file_op()
 
