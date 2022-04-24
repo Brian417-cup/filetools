@@ -16,7 +16,7 @@
 # 依赖库
     pip install shutilwhich
     pip install glob3
-
+    pip install click
 
 
 # 运行方式(Windows)
