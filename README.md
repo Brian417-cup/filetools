@@ -9,9 +9,14 @@
   add_tail -src=... -tail=...  -base=...  
   add_head -src=... -head=...  -base=...
   ## 拷贝
-  copy -src=... -dst=...(这里指目标的文件夹)
+  copy -src=... -dst=...(这里指目标的文件夹)  
+  copydir -src=... -dst=...(这里指目标的文件夹)
   ##  剪切
-  move -src=... -dst=...(这里指目标文件夹)
+  move -src=... -dst=...(这里指目标文件夹)  
+  movedir -src=... -dst=...(这里指目标文件夹)
+  ##  删除
+  delete -src=...  
+  deletedir -src=...
 
 # 依赖库
     pip install shutilwhich
