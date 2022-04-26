@@ -20,19 +20,29 @@ def file_op():
 @click.command(name='find')
 @click.option('-src',help='目标文件路径')
 @click.option('-base',help='是否加入目标文件路径作为基地址，默认为true',default=True,type=bool)
-def traversePath(src, base):
+@click.option('-export',help='确定是否要外输入文件',default='',type=str)
+def traversePath(src, base, export):
     '''
     example: traverse -src=[base root name]/通配符
     找到目标路径下符合条件的文件(支持通配符)
     '''
-
-
     traverse_list=glob.glob(src)
-    for item in traverse_list:
-        if base:
-            click.echo(item)
-        else:
-            click.echo(os.path.basename(item))
+    if len(export)!=0:
+        file=open(export,'w')
+        # file=os.open(export,os.O_RDWR)
+        for item in traverse_list:
+            if base:
+                file.writelines(item+'\n')
+            else:
+                file.writelines(os.path.basename(item+'\n'))
+        # os.close(file)
+
+    else:
+        for item in traverse_list:
+            if base:
+                click.echo(item)
+            else:
+                click.echo(os.path.basename(item))
 
 
 
@@ -209,4 +219,5 @@ if __name__ == '__main__':
 
     file_op.add_command(delete)
     file_op.add_command(deletedir)
+
     file_op()
