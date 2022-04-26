@@ -2,9 +2,10 @@
 这是一个简单的文件操作封装
 
 
-# 目前的命令
+# 目前的命令  
+# 注：部分命令支持了普通文件和文件夹的操作，所有的命令操作都将支持导出过程性txt中间文件
   ## 查
-  find -src=... -base=...
+  find -src=... -base=... -export=...(导出的)
   ## 改名
   add_tail -src=... -tail=...  -base=...  
   add_head -src=... -head=...  -base=...
