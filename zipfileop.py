@@ -66,6 +66,10 @@ def package(src,dst):
     file_base_name=file_name[:file_name.rfind('.')]
     suffix=file_name[file_name.rfind('.')+1:]
 
+    if os.path.dirname(dst):
+        click.echo('保存的上一级文件夹不存在')
+        return
+
     if os.path.exists(dst):
         click.echo('目标压缩包已存在，是否选择覆盖原压缩包  Y/N')
         choose=input()
