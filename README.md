@@ -1,4 +1,9 @@
-# file_op_tools
+# file_op_tools  
+
+# 一、操作对象  
+
+
+# 1.普通文件和文件夹
 这是一个简单的文件操作封装
 
 
@@ -17,15 +22,24 @@
   movedir -src=... -dst=...(这里指目标文件夹)
   ##  删除
   delete -src=...  
-  deletedir -src=...
+  deletedir -src=...  
 
-# 依赖库
+# 2.压缩包
+
+  ## 列举压缩包下一级的所有文件(包括文件夹)
+  findzip -src=... -base=...  -export=将所有文件名称导出到目标txt中
+  ## 打包压缩
+  package -src=... -dst=...
+  ## 解压
+  unpackage -src=... -dst=...
+
+# 二、依赖库
     pip install shutilwhich
     pip install glob3
     pip install click
 
 
-# 运行方式(Windows)
+# 三、运行方式(Windows)
     以fileop.py为例:
     在对应的文件目录下进入，dos输入:  python fileop.py 命令名  -参数名1=参数值1  -参数名2=参数值2  ......
   
