@@ -20,7 +20,7 @@ def file_op():
 @click.command(name='find')
 @click.option('-src',help='目标文件路径')
 @click.option('-base',help='是否加入目标文件路径作为基地址，默认为true',default=True,type=bool)
-@click.option('-export',help='确定是否要外输入文件',default='',type=str)
+@click.option('-export',help='确定是否要外输入文件，默认不输出',default='',type=str)
 def traversePath(src, base, export):
     '''
     example: traverse -src=[base root name]/通配符
@@ -28,6 +28,15 @@ def traversePath(src, base, export):
     '''
     traverse_list=glob.glob(src)
     if len(export)!=0:
+        if os.path.exists(export):
+            click.echo('文件夹已存在，是否选择删除原文件夹，再创建同名文件夹  Y/N?')
+            choose = input()
+            if choose.lower() == 'y':
+                os.remove(export)
+            else:
+                click.echo('无法保存结果')
+                return
+
         file=open(export,'w')
         # file=os.open(export,os.O_RDWR)
         for item in traverse_list:
@@ -36,6 +45,7 @@ def traversePath(src, base, export):
             else:
                 file.writelines(os.path.basename(item+'\n'))
         # os.close(file)
+        click.echo('结果已保存至: '+export)
 
     else:
         for item in traverse_list:
