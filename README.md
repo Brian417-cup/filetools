@@ -5,7 +5,7 @@
 # 目前的命令  
 # 注：部分命令支持了普通文件和文件夹的操作，所有的命令操作都将支持导出过程性txt中间文件
   ## 查
-  find -src=... -base=... -export=...(导出的)
+  find -src=... -base=... -export=...(将查询结果导出成指定路径下的txt文件中)
   ## 改名
   add_tail -src=... -tail=...  -base=...  
   add_head -src=... -head=...  -base=...
