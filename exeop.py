@@ -143,7 +143,6 @@ if __name__ == '__main__':
     exeThread=CustomExeProcessor(threadID=1,name='exe调用线程',exepPath='f:/test.exe',
                                  argv=['100','222'])
     exeThread.start()
-    exeThread.run()
 
     while True:
         print('这是主线程')
