@@ -52,5 +52,6 @@
     exe模块
       在自己的调用函数中声明并调用:
       调用对象名=CustomExeProcessor(threadID=线程号,name=子线程名,exepPath=exe完整路径,
-                                 argv=[传入参数1,传入参数2，...,传入参数n]，type=缓冲的处理方式,export=缓冲需要保存到txt文件中，这里要填完整的txt文件路径名)  
+                                 argv=[传入参数1,传入参数2，...,传入参数n]，type=缓冲的处理方式,export=缓冲需要保存到txt文件中，这里要填完整的txt文件路径名,
+                                 ,parallel=True(默认选择的是和主线程并行的方式调用exe))  
       调用对象名.start()
