@@ -12,14 +12,11 @@ class ExeProcessType(Enum):
     EXPORT = -2,
     OTHERS = -3
 
-# 总结:线程中start和run的差别--https://www.jb51.net/article/185920.htm
-# run() 方法并不启动一个新线程，就是在主线程中调用了一个普通函数而已。
-# start() 方法是启动一个子线程，线程名就是自己定义的name。
-# 因此，如果你想启动多线程，就必须使用start()方法。
-# 采用异步执行
 class CustomExeProcessor(threading.Thread):
-
-    def __init__(self,threadID,name,exepPath,argv,type=ExeProcessType.PRINT,export=''):
+    def __init__(self,threadID,name,exepPath,
+                 argv,type=ExeProcessType.PRINT,export='',
+                 # 这里默认选择和主线程并行，也可以设置成串行的工作方式
+                 parallel=True):
         threading.Thread.__init__(self)
         self.threadID=threadID
         self.name=name
@@ -27,6 +24,7 @@ class CustomExeProcessor(threading.Thread):
         self.argv=argv
         self.type=type
         self.export=export
+        self.parallel=parallel
 
     def _getCMD(self):
         self.cmd=self.exePath
@@ -96,6 +94,16 @@ class CustomExeProcessor(threading.Thread):
             else:
                 print('写下自定义的处理方法')
 
+    # 总结:线程中start和run的差别--https://www.jb51.net/article/185920.htm
+    # run() 方法并不启动一个新线程，就是在主线程中调用了一个普通函数而已。
+    # start() 方法是启动一个子线程，线程名就是自己定义的name。
+    # 因此，如果你想启动多线程，就必须使用start()方法。
+    # 采用异步执行
+    def execute(self):
+        if self.parallel:
+            self.start()
+        else:
+            self.run()
 
 
 
@@ -140,9 +148,10 @@ class CustomExeProcessor(threading.Thread):
 
 # 并行测试
 if __name__ == '__main__':
-    exeThread=CustomExeProcessor(threadID=1,name='exe调用线程',exepPath='f:/test.exe',
-                                 argv=['100','222'])
-    exeThread.start()
+    exeThread=CustomExeProcessor(threadID=1,name='exe调用线程',
+                                 exepPath=os.path.join(os.curdir,'exeDemo','test.exe'),
+                                 argv=['100','222'],parallel=True)
+    exeThread.execute()
 
     while True:
         print('这是主线程')
