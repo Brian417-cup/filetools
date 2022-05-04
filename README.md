@@ -41,21 +41,29 @@
     pip install click
 
 
-# 三、运行方式(Windows)  
+# 三、运行方式(Windows)
 ----------
-   ## 普通文件模块和压缩包模块
+   ## 1.普通文件模块(fileop.py)和压缩包模块(zipfileop.py)
       以fileop.py为例:
       在对应的文件目录下进入，dos输入:  python fileop.py 命令名  -参数名1=参数值1  -参数名2=参数值2  ......  
 ----------    
-  ## exe模块
-  ### Python版本:
+  ## 2.exe模块
+  -------------
+  ## (1)exe输出结果的处理方式解释说明
+  打印  按行打印
+  导出  导出到指定的txt文件中
+  其他  按照自定义方式对取得的字符串在源码中进行操作即可
+  
+  ---------------------
+  ### (2)Python版本(定义和样例说明见exeop.py)使用
       在自己的调用函数中声明并调用:
       调用对象名=CustomExeProcessor(threadID=线程号,name=子线程名,exepPath=exe完整路径,
-                                 argv=[传入参数1,传入参数2，...,传入参数n]，type=缓冲的处理方式,export=缓冲需要保存到txt文件中，这里要填完整的txt文件路径名,
+                                 argv=[传入参数1,传入参数2，...,传入参数n]，type=输出结果的处理方式,export=缓冲需要保存到txt文件中，这里要填完整的txt文件路径名,
                                  ,parallel=True(默认选择的是和主线程并行的方式调用exe))  
       调用对象名.execute()  
 ----------------      
-   ### Java版本:  
+   ### (3)Java版本(定义和样例说明见ExeProcessorPlus.java)使用
+    在自己的调用函数中声明并调用:
     //设置参数  
     ExeProcessorPlus exeProcessorPlus=new ExeProcessorPlus();  
     //传参信息  
@@ -64,4 +72,5 @@
     ...  
     argvs.add(参数n);  
     //开始执行  
-    exeProcessorPlus.executeRun(可执行文件的路径名, argvs,默认并行为true);  
+    exeProcessorPlus.executeRun(可执行文件的路径名, argvs,type=输出结果的处理方式,export=缓冲需要保存到txt文件中，这里要填完整的txt文件路径名,
+                                 ,parallel=True(默认选择的是和主线程并行的方式调用exe));  
