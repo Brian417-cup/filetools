@@ -33,8 +33,7 @@
 
 ## 3.exe文件
   
-  ### 调用exe，并将缓冲区中的信息打印或者保存到指定txt文件中(Python版本)
-  ### 调用exe，并将缓冲区中的信息打印(Java版本)
+  ### 调用exe，并将缓冲区中的信息打印或者保存到指定txt文件中(Python、Java版本)  
 # 二、依赖库
     pip install shutilwhich
     pip install glob3
