@@ -12,6 +12,12 @@ enum ExeProcessorType {
 }
 
 public class ExeProcessorPlus {
+	//Windows进入cmd命令专用
+	public static String CMD_INTRICATOR = "cmd /c ";
+	//Windows系统单次多条命令顺序执行连接符
+	public static String EXE_INTRICATOR_SEPERATE = " & ";
+	
+	
 	private String exePath;
 	private Process process = null;
 	private Vector<String> argvs;
@@ -117,9 +123,9 @@ public class ExeProcessorPlus {
 	public boolean executeRun(String path, Vector<String> argvs, ExeProcessorType type, String exportPath,
 			boolean isParallel) {
 		try {
-			if (path.contains(" ")) {
+			/*if (path.contains(" ")) {
 				path = "\"" + path + "\"";
-			}
+			}*/
 
 			this.setExePath(path);
 			this.setCommandStr(argvs);
@@ -165,15 +171,94 @@ public class ExeProcessorPlus {
 		return true;
 	}
 
+	
+	//该函数是Windows专用，为了保证有些exe的环境变量没有配置到全局从而需要逐步切入对应换环境中才能执行
+	public boolean executeRunForWindows(Vector<String> prefixGroups,
+			String path, Vector<String> argvs, ExeProcessorType type, String exportPath,
+			boolean isParallel) {
+		try {
+			
+			this.setExePath(path);
+			this.setCommandStr(argvs);
+			String cmdStr = "";
+			if (prefixGroups.size()!=0) {
+				cmdStr=CMD_INTRICATOR;
+				
+				for (int i = 0; i < prefixGroups.size(); i++) {
+					cmdStr=cmdStr+prefixGroups.get(i)+EXE_INTRICATOR_SEPERATE;
+				}
+			}
+			
+			cmdStr=cmdStr+exePath;
+			
+			for (int i = 0; i < argvs.size(); i++) {
+				cmdStr = cmdStr + " " + argvs.get(i);
+			}
+
+			System.out.println(cmdStr);
+
+			this.process = Runtime.getRuntime().exec(cmdStr);
+
+			if (!isParallel) {
+				this.process.waitFor();
+			}
+
+			// 向管道中输入数据
+			/*
+			 * new Thread() { public void run() { OutputStream stdin =
+			 * process.getOutputStream(); for (int i = 0; stdin!=null ; i++) { try {
+			 * Thread.sleep(1); // 要休息片刻才看得到 I/O 的缓存效果。 stdin.write((i + " " + i +
+			 * "\n").getBytes()); } catch (Exception ex) { ex.printStackTrace(); } } }
+			 * }.start();
+			 */
+			
+			if (isParallel) {
+				new Thread() {
+					public void run() {
+						internalExecute(type, exportPath);
+					};
+				}.start();
+			}
+			else {
+				internalExecute(type, exportPath);
+			}
+			
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+
+		return true;
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO 自动生成的方法存根
 		ExeProcessorPlus exeProcessorPlus = new ExeProcessorPlus();
+		
+		
+		//方式一:直接执行对应的Exe
+		String exePath="./exeDemo/test.exe";
 		Vector<String> argvs = new Vector<String>();
-		argvs.add("123");
-		argvs.add("456");
+		argvs.add("12131");
+		argvs.add("456464564");
 
-		exeProcessorPlus.executeRun("exeDemo/test.exe", argvs, ExeProcessorType.PRINT, "", true);
+		exeProcessorPlus.executeRun(exePath, argvs, ExeProcessorType.PRINT, "", true);
+		
+		//方式二：切换到对应的环境下再执行对应的EXE(针对Windows系统),为了保证有些局部变量能被正常的使用（这里调用的前提是f盘下有exeDemo中的test.exe）
+		/*Vector<String> prefixGroups=new Vector<String>();
+		prefixGroups.add("f:");
+		prefixGroups.add("cd f:");
+		String exePath="f:/test.exe";
+		
+		Vector<String> argvs = new Vector<String>();
+		argvs.add("1545446");
+		argvs.add("5959595");
 
+		exeProcessorPlus.executeRunForWindows(prefixGroups, exePath, 
+				argvs, ExeProcessorType.PRINT, "", true);*/
+		
 		while (true) {
 			System.out.println("这是主线程");
 		}
