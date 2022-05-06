@@ -22,6 +22,16 @@ public class ExeProcessorPlus {
 	private Process process = null;
 	private Vector<String> argvs;
 
+	public ExeProcessorPlus() {
+		// TODO 自动生成的构造函数存根
+		if (argvs!=null) {
+			argvs.clear();
+		}
+		
+		process=null;
+		exePath="";
+	}
+
 	public String getExePath() {
 		return exePath;
 	}
